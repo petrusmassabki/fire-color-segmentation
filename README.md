@@ -1,2 +1,3 @@
-# fire-color-segmentation
+# Fire Color Segmentation
+
 Fire Color Segmentation Methods
