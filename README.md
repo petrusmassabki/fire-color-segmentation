@@ -4,7 +4,7 @@ Fire Color Segmentation Methods
 
 ## Description
 
-(To be included)
+This module includes eight fire color segmentation methods.
 
 ## Comparison
 
