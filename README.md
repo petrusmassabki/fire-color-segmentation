@@ -1,13 +1,14 @@
 # Fire Color Segmentation
 
-Fire Color Segmentation Methods
+Fire color segmentation methods evaluated in https://repositorio.ufsc.br/handle/123456789/202788.
 
 ## Description
 
-This module includes eight fire color segmentation methods.
+This module includes eight fire color segmentation methods. Methods [2], [3] and [4] are rule-based; [1] and [6] rely on reference histograms; [5] and [7] use pixel clustering in a single channel.
 
-## Comparison
+## Comparison Example
 
+Fire image and corresponding binary masks per method
 ![App views](examples/fire_segmentation_comparison.png)
 
 ## References
