@@ -3,7 +3,23 @@ import numpy as np
 
 
 def chen(image, st=175, rt=115):
+    """Create a fire color mask according to Chen, Kao and Chang (2003).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    st : int, optional
+        Saturation (S channel) threshold.
+    rt : int, optional
+        Red (R channel) threshold.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     r = image[:, :, 2]
     g = image[:, :, 1]
     b = image[:, :, 0]
@@ -20,7 +36,25 @@ def chen(image, st=175, rt=115):
 
 
 def horng(image, h_max=30, s_min=55, v_min=120):
+    """Create a fire color mask according to Horng, Peng and Chen (2005).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    h_max : int, optional
+        Maximum hue (H channel) threshold.
+    s_min : int, optional
+        Minimum saturation (S channel) threshold.
+    v_min : int, optional
+        Minimum value (V channel) threshold.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     h = image_hsv[:, :, 0]
     s = image_hsv[:, :, 1]
@@ -37,7 +71,21 @@ def horng(image, h_max=30, s_min=55, v_min=120):
 
 
 def celik(image, t=40):
+    """Create a fire color mask according to Çelik and Demirel (2009).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    t : int, optional
+        Tau constant determined using a ROC analysis.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     image_ycrcb = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     y = image_ycrcb[:, :, 0]
     cr = image_ycrcb[:, :, 1]
@@ -63,7 +111,21 @@ def celik(image, t=40):
 
 
 def phillips(image, cp):
+    """Create a fire color mask according to Phillips, Shah and Lobo (2002).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    cp : numpy.ndarray
+        Color Predicate; a 256 x 256 x 256 binary lookup table array.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     b = image[:, :, 0]
     g = image[:, :, 1]
     r = image[:, :, 2]
@@ -76,7 +138,26 @@ def phillips(image, cp):
 
 
 def backprojection_hsv(image, m, bins=16, threshold=0.4):
+    """Create a fire color mask using histogram backprojection in the HSV color space.
+    References: Swain and Ballard (1991); Wirth and Zaremba (2010).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        OOriginal image (RGB).
+    m : numpy.ndarray
+        HSV model histogram (3D).
+    bins : int, optional
+        Number of bins. Must be equal to histogram size.
+    threshold : float, optional
+        Threshold above which the pixel is considered fire.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     h = np.array(np.floor(image_hsv[:, :, 0] / (180/bins)), dtype=np.uint8)
     s = np.array(np.floor(image_hsv[:, :, 1] / (256/bins)), dtype=np.uint8)
@@ -100,7 +181,26 @@ def backprojection_hsv(image, m, bins=16, threshold=0.4):
 
 
 def backprojection_ycbcr(image, m, bins=16, threshold=0.4):
+    """Create a fire color mask using histogram backprojection in the YCbCr color space.
+    References: Swain and Ballard (1991); Wirth and Zaremba (2010).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    m : numpy.ndarray
+        YCbCr model histogram (3D).
+    bins : int, optional
+        Number of bins. Must be equal to histogram size.
+    threshold : float, optional
+        Threshold above which the pixel is considered fire.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     image_ycrcb = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
     y = np.array(np.floor(image_ycrcb[:, :, 0] / (256/bins)), dtype=np.uint8)
     cr = np.array(np.floor(image_ycrcb[:, :, 1] / (256/bins)), dtype=np.uint8)
@@ -124,7 +224,21 @@ def backprojection_ycbcr(image, m, bins=16, threshold=0.4):
 
 
 def rossi(image, constant):
+    """Create a fire color mask according to Rossi e Akhloufi (2009).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    constant : float
+        Experimentally determined constant.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     image_yuv = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
     v = image_yuv[:, :, 2]
     v_float = np.float32(v.reshape((-1, 1)))
@@ -157,7 +271,25 @@ def rossi(image, constant):
 
 
 def rudz(image, hist_blue_ref, hist_green_ref, hist_red_ref):
+    """Create a fire color mask according to Rudz et al. (2013).
 
+    Parameters
+    ----------
+    image : numpy.ndarray
+        Original image (RGB).
+    hist_blue_ref : numpy.ndarray
+        Blue channel reference histogram.
+    hist_green_ref : numpy.ndarray
+        Green channel reference histogram.
+    hist_red_ref : numpy.ndarray
+        Red channel reference histogram.
+
+    Returns
+    -------
+    mask : numpy.ndarray
+        Fire region binary mask.
+
+    """
     mean_b_ref = 58.503
     mean_g_ref = 144.522
     mean_r_ref = 225.289
